@@ -66,11 +66,9 @@ export default function Navbar() {
                 <span className="hidden md:block text-xs">{user.full_name || user.email}</span>
               </button>
               <div className="absolute right-0 top-8 bg-white border border-[#E8E4DF] shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                {(user.role === 'shop_owner' || user.role === 'admin') && (
-                  <Link href="/admin" className="block px-4 py-3 text-sm hover:bg-[#F7F5F2] border-b border-[#E8E4DF]">
-                    จัดการร้าน
-                  </Link>
-                )}
+                <Link href="/admin" className="block px-4 py-3 text-sm hover:bg-[#F7F5F2] border-b border-[#E8E4DF]">
+                  ร้านของฉัน
+                </Link>
                 <Link href="/orders" className="block px-4 py-3 text-sm hover:bg-[#F7F5F2]">คำสั่งซื้อของฉัน</Link>
                 <button onClick={handleLogout} className="block w-full text-left px-4 py-3 text-sm hover:bg-[#F7F5F2] text-red-600">
                   ออกจากระบบ

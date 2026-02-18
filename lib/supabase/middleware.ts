@@ -23,19 +23,10 @@ export async function updateSession(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Protect admin routes
+  // Protect admin routes — ต้อง login เท่านั้น
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
       return NextResponse.redirect(new URL('/auth/login', request.url))
-    }
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-
-    if (!profile || !['shop_owner', 'admin'].includes(profile.role)) {
-      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 
