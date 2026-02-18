@@ -116,16 +116,6 @@ create policy "Users can view own orders" on orders
 create policy "Users can create orders" on orders
   for insert with check (auth.uid() = user_id);
 
-create policy "Shop owners can view orders of their products" on orders
-  for select using (
-    exists (
-      select 1 from order_items oi
-      join products p on p.id = oi.product_id
-      join shops s on s.id = p.shop_id
-      where oi.order_id = orders.id and s.owner_id = auth.uid()
-    )
-  );
-
 -- ======= ORDER ITEMS =======
 create table order_items (
   id uuid default uuid_generate_v4() primary key,
@@ -148,6 +138,17 @@ create policy "Shop owners can view their order items" on order_items
       select 1 from products p
       join shops s on s.id = p.shop_id
       where p.id = order_items.product_id and s.owner_id = auth.uid()
+    )
+  );
+
+-- policy นี้ต้องสร้างหลัง order_items เพราะอ้างอิงตารางนั้น
+create policy "Shop owners can view orders of their products" on orders
+  for select using (
+    exists (
+      select 1 from order_items oi
+      join products p on p.id = oi.product_id
+      join shops s on s.id = p.shop_id
+      where oi.order_id = orders.id and s.owner_id = auth.uid()
     )
   );
 
