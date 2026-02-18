@@ -17,11 +17,18 @@ export default function ProductCard({ product }: { product: Product }) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { window.location.href = '/auth/login'; return }
 
+    const { data: existing } = await supabase
+      .from('cart_items')
+      .select('quantity')
+      .eq('user_id', user.id)
+      .eq('product_id', product.id)
+      .maybeSingle()
+
     await supabase.from('cart_items').upsert({
       user_id: user.id,
       product_id: product.id,
-      quantity: 1,
-    }, { onConflict: 'user_id,product_id', ignoreDuplicates: false })
+      quantity: existing ? existing.quantity + 1 : 1,
+    }, { onConflict: 'user_id,product_id' })
 
     setAdding(false)
     setAdded(true)

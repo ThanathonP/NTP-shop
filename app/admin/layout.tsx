@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect('/auth/login')
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-  if (!profile || !['shop_owner', 'admin'].includes(profile.role)) redirect('/')
+  if (!profile) redirect('/')
 
   const navItems = [
     { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
