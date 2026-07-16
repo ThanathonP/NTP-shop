@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'MONŌ — ร้านค้าออนไลน์',
+  title: 'NTP — ร้านค้าออนไลน์',
   description: 'สินค้าคัดสรร คุณภาพพรีเมียม',
 }
 

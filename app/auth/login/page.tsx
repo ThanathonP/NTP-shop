@@ -21,7 +21,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#F7F5F2] px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl tracking-widest">MONŌ</Link>
+          <Link href="/" className="font-display text-3xl tracking-widest">NTP</Link>
           <p className="text-[#888] mt-2 text-sm">เข้าสู่ระบบเพื่อสั่งซื้อสินค้า</p>
         </div>
         <div className="card p-8">

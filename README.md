@@ -1,11 +1,11 @@
-# MONŌ Shop — Full-Stack E-Commerce
+# NTP Shop — Full-Stack E-Commerce
 
 Next.js 14 + Supabase + Tailwind CSS + Vercel
 
 ## 🗂️ โครงสร้างโปรเจ็ค
 
 ```
-mono-shop/
+ntp-shop/
 ├── app/
 │   ├── page.tsx              # หน้าแรก (Homepage)
 │   ├── shop/                 # หน้าร้านค้า/สินค้าทั้งหมด

@@ -1,5 +1,5 @@
 -- ========================================
--- MONO SHOP — Supabase Database Schema
+-- NTP SHOP — Supabase Database Schema
 -- วางใน SQL Editor ของ Supabase แล้วกด Run
 -- ========================================
 

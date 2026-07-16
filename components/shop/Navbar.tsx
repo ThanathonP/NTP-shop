@@ -35,7 +35,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#F7F5F2]/90 backdrop-blur-md border-b border-[#E8E4DF] h-16 flex items-center">
       <div className="max-w-7xl mx-auto w-full px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-display text-xl tracking-widest">MONŌ</Link>
+        <Link href="/" className="font-display text-xl tracking-widest">NTP</Link>
 
         {/* Desktop Nav */}
         <ul className="hidden md:flex gap-8 list-none">

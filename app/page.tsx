@@ -34,7 +34,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="h-96 bg-gradient-to-br from-[#EDE8E0] to-[#D8CFC4] relative overflow-hidden">
-            <div className="absolute bottom-8 left-8 font-display text-8xl text-white/10 select-none">MONŌ</div>
+            <div className="absolute bottom-8 left-8 font-display text-8xl text-white/10 select-none">NTP</div>
             <div className="absolute top-8 right-8 bg-white p-4 shadow-lg text-sm">
               ⭐ ยอดนิยม<br /><strong className="text-base">500+ สินค้า</strong>
             </div>
@@ -89,13 +89,13 @@ export default async function HomePage() {
         {/* FOOTER */}
         <footer className="border-t border-[#E8E4DF]">
           <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
-            <span className="font-display text-xl tracking-widest">MONŌ</span>
+            <span className="font-display text-xl tracking-widest">NTP</span>
             <div className="flex gap-6 text-xs text-[#888]">
               {['นโยบายความเป็นส่วนตัว','เงื่อนไขการใช้งาน','ติดต่อเรา'].map(l => (
                 <a key={l} href="#" className="hover:text-[#1A1A1A] transition-colors">{l}</a>
               ))}
             </div>
-            <p className="text-xs text-[#888]">© 2025 MONŌ. สงวนลิขสิทธิ์</p>
+            <p className="text-xs text-[#888]">© 2025 NTP. สงวนลิขสิทธิ์</p>
           </div>
         </footer>
       </main>

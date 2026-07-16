@@ -239,7 +239,7 @@ async function getOrCreateShop() {
     email: SEED_EMAIL,
     password: SEED_PASSWORD,
     email_confirm: true,
-    user_metadata: { full_name: 'MONŌ Admin' },
+    user_metadata: { full_name: 'NTP Admin' },
   })
 
   if (createErr) {
@@ -255,7 +255,7 @@ async function getOrCreateShop() {
 
   // upsert profile เผื่อกรณี profiles table ถูก drop แล้วสร้างใหม่
   await supabase.from('profiles').upsert(
-    { id: userId, email: SEED_EMAIL, full_name: 'MONŌ Admin', role: 'shop_owner' },
+    { id: userId, email: SEED_EMAIL, full_name: 'NTP Admin', role: 'shop_owner' },
     { onConflict: 'id' }
   )
 
@@ -263,7 +263,7 @@ async function getOrCreateShop() {
     .from('shops')
     .insert({
       owner_id: userId,
-      name: 'MONŌ Store',
+      name: 'NTP Store',
       description: 'ร้านค้าออนไลน์คัดสรรสินค้าคุณภาพ สไตล์มินิมอล',
       is_active: true,
     })

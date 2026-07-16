@@ -34,7 +34,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#F7F5F2] px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl tracking-widest">MONŌ</Link>
+          <Link href="/" className="font-display text-3xl tracking-widest">NTP</Link>
           <p className="text-[#888] mt-2 text-sm">สมัครสมาชิกเพื่อเริ่มใช้งาน</p>
         </div>
         <div className="card p-8">

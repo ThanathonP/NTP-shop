@@ -19,7 +19,7 @@ export default function AdminSidebar({ name }: { name: string }) {
     <>
       {/* Mobile top bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-30 h-14 bg-[#1A1A1A] text-white flex items-center justify-between px-4">
-        <Link href="/" className="font-display text-lg tracking-widest">MONŌ</Link>
+        <Link href="/" className="font-display text-lg tracking-widest">NTP</Link>
         <button onClick={() => setOpen(true)} aria-label="เปิดเมนู" aria-expanded={open}>
           <Menu size={22} aria-hidden="true" />
         </button>
@@ -42,7 +42,7 @@ export default function AdminSidebar({ name }: { name: string }) {
       >
         <div className="p-6 border-b border-white/10 flex items-start justify-between">
           <div>
-            <Link href="/" className="font-display text-xl tracking-widest">MONŌ</Link>
+            <Link href="/" className="font-display text-xl tracking-widest">NTP</Link>
             <p className="text-xs text-white/40 mt-1">Admin Panel</p>
           </div>
           <button className="md:hidden" onClick={() => setOpen(false)} aria-label="ปิดเมนู">
