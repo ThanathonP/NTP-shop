@@ -13,7 +13,6 @@ export default function ProductsClient({ initialProducts, shopId }: { initialPro
   const [editing, setEditing] = useState<Product | null>(null)
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
-  const supabase = createClient()
 
   const openCreate = () => { setForm(EMPTY); setEditing(null); setShowForm(true) }
   const openEdit = (p: Product) => {
@@ -24,6 +23,7 @@ export default function ProductsClient({ initialProducts, shopId }: { initialPro
   const save = async () => {
     if (!form.name || !form.price) return
     setSaving(true)
+    const supabase = createClient()
     const payload = { shop_id: shopId, name: form.name, description: form.description, price: Number(form.price), stock_qty: Number(form.stock_qty), category: form.category, image_url: form.image_url || null }
 
     if (editing) {
@@ -38,6 +38,7 @@ export default function ProductsClient({ initialProducts, shopId }: { initialPro
 
   const deleteProduct = async (id: string) => {
     if (!confirm('ลบสินค้านี้?')) return
+    const supabase = createClient()
     await supabase.from('products').delete().eq('id', id)
     setProducts(prev => prev.filter(p => p.id !== id))
   }

@@ -12,11 +12,11 @@ export default function ShopFormClient({ initialShop, ownerId }: { initialShop: 
   })
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
-  const supabase = createClient()
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
+    const supabase = createClient()
     if (initialShop) {
       await supabase.from('shops').update(form).eq('id', initialShop.id)
     } else {

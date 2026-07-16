@@ -7,11 +7,11 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const supabase = createClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true); setError('')
+    const supabase = createClient()
     const { error } = await supabase.auth.signInWithPassword(form)
     if (error) { setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง'); setLoading(false) }
     else window.location.href = '/'

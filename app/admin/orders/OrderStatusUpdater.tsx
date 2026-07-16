@@ -11,10 +11,10 @@ const LABELS: Record<OrderStatus, string> = {
 export default function OrderStatusUpdater({ orderId, currentStatus }: { orderId: string, currentStatus: OrderStatus }) {
   const [status, setStatus] = useState(currentStatus)
   const [saving, setSaving] = useState(false)
-  const supabase = createClient()
 
   const update = async (newStatus: OrderStatus) => {
     setSaving(true)
+    const supabase = createClient()
     await supabase.from('orders').update({ status: newStatus }).eq('id', orderId)
     setStatus(newStatus)
     setSaving(false)

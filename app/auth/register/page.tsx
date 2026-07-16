@@ -9,7 +9,6 @@ export default function RegisterPage() {
   const [touched, setTouched] = useState({ password: false, confirmPassword: false })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const supabase = createClient()
   const router = useRouter()
 
   const passwordTooShort = form.password.length > 0 && form.password.length < 6
@@ -21,6 +20,7 @@ export default function RegisterPage() {
     setTouched({ password: true, confirmPassword: true })
     if (!canSubmit) return
     setLoading(true); setError('')
+    const supabase = createClient()
     const { error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,

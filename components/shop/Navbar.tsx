@@ -9,9 +9,9 @@ export default function Navbar() {
   const [user, setUser] = useState<Profile | null>(null)
   const [cartCount, setCartCount] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
-  const supabase = createClient()
 
   useEffect(() => {
+    const supabase = createClient()
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (user) {
         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
@@ -27,6 +27,7 @@ export default function Navbar() {
   }, [])
 
   const handleLogout = async () => {
+    const supabase = createClient()
     await supabase.auth.signOut()
     window.location.href = '/'
   }

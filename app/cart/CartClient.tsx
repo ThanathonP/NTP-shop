@@ -9,15 +9,16 @@ import type { CartItem } from '@/types'
 
 export default function CartClient({ initialItems }: { initialItems: any[] }) {
   const [items, setItems] = useState(initialItems)
-  const supabase = createClient()
 
   const updateQty = async (id: string, qty: number) => {
     if (qty < 1) return removeItem(id)
+    const supabase = createClient()
     await supabase.from('cart_items').update({ quantity: qty }).eq('id', id)
     setItems(prev => prev.map(i => i.id === id ? { ...i, quantity: qty } : i))
   }
 
   const removeItem = async (id: string) => {
+    const supabase = createClient()
     await supabase.from('cart_items').delete().eq('id', id)
     setItems(prev => prev.filter(i => i.id !== id))
   }
