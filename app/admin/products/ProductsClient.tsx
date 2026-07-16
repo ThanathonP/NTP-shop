@@ -81,8 +81,12 @@ export default function ProductsClient({ initialProducts, shopId }: { initialPro
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-[#E8E4DF] rounded transition-colors"><Pencil size={14} /></button>
-                    <button onClick={() => deleteProduct(p.id)} className="p-1.5 hover:bg-red-50 text-red-400 rounded transition-colors"><Trash2 size={14} /></button>
+                    <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-[#E8E4DF] rounded transition-colors" aria-label={`แก้ไข ${p.name}`}>
+                      <Pencil size={14} aria-hidden="true" />
+                    </button>
+                    <button onClick={() => deleteProduct(p.id)} className="p-1.5 hover:bg-red-50 text-red-400 rounded transition-colors" aria-label={`ลบ ${p.name}`}>
+                      <Trash2 size={14} aria-hidden="true" />
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -93,11 +97,11 @@ export default function ProductsClient({ initialProducts, shopId }: { initialPro
 
       {/* Modal Form */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="product-form-title">
           <div className="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-[#E8E4DF]">
-              <h2 className="font-display text-xl">{editing ? 'แก้ไขสินค้า' : 'เพิ่มสินค้าใหม่'}</h2>
-              <button onClick={() => setShowForm(false)}><X size={20} /></button>
+              <h2 id="product-form-title" className="font-display text-xl">{editing ? 'แก้ไขสินค้า' : 'เพิ่มสินค้าใหม่'}</h2>
+              <button onClick={() => setShowForm(false)} aria-label="ปิดหน้าต่าง"><X size={20} aria-hidden="true" /></button>
             </div>
             <div className="p-6 space-y-4">
               {[['name','ชื่อสินค้า *','text'],['price','ราคา (บาท) *','number'],['stock_qty','จำนวนคงเหลือ','number'],['category','หมวดหมู่','text'],['image_url','URL รูปภาพ','url']].map(([field, label, type]) => (

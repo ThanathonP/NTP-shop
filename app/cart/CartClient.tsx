@@ -50,17 +50,29 @@ export default function CartClient({ initialItems }: { initialItems: any[] }) {
               <p className="text-[#888] text-sm">{formatPrice(item.products?.price || 0)}</p>
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => updateQty(item.id, item.quantity - 1)} className="w-8 h-8 border border-[#E8E4DF] flex items-center justify-center hover:bg-[#F7F5F2]">
-                <Minus size={12} />
+              <button
+                onClick={() => updateQty(item.id, item.quantity - 1)}
+                className="w-8 h-8 border border-[#E8E4DF] flex items-center justify-center hover:bg-[#F7F5F2]"
+                aria-label={`ลดจำนวน ${item.products?.name}`}
+              >
+                <Minus size={12} aria-hidden="true" />
               </button>
-              <span className="w-8 text-center text-sm">{item.quantity}</span>
-              <button onClick={() => updateQty(item.id, item.quantity + 1)} className="w-8 h-8 border border-[#E8E4DF] flex items-center justify-center hover:bg-[#F7F5F2]">
-                <Plus size={12} />
+              <span className="w-8 text-center text-sm" aria-live="polite">{item.quantity}</span>
+              <button
+                onClick={() => updateQty(item.id, item.quantity + 1)}
+                className="w-8 h-8 border border-[#E8E4DF] flex items-center justify-center hover:bg-[#F7F5F2]"
+                aria-label={`เพิ่มจำนวน ${item.products?.name}`}
+              >
+                <Plus size={12} aria-hidden="true" />
               </button>
             </div>
             <p className="font-medium w-20 text-right text-sm">{formatPrice((item.products?.price || 0) * item.quantity)}</p>
-            <button onClick={() => removeItem(item.id)} className="text-red-400 hover:text-red-600 p-1">
-              <Trash2 size={16} />
+            <button
+              onClick={() => removeItem(item.id)}
+              className="text-red-400 hover:text-red-600 p-1"
+              aria-label={`ลบ ${item.products?.name} ออกจากตะกร้า`}
+            >
+              <Trash2 size={16} aria-hidden="true" />
             </button>
           </div>
         ))}

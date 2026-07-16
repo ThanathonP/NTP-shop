@@ -50,10 +50,10 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <Link href="/cart" className="relative p-1">
-            <ShoppingCart size={20} />
+          <Link href="/cart" className="relative p-1" aria-label={`ตะกร้าสินค้า${cartCount > 0 ? ` (${cartCount} ชิ้น)` : ''}`}>
+            <ShoppingCart size={20} aria-hidden="true" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#C8A882] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#C8A882] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" aria-hidden="true">
                 {cartCount}
               </span>
             )}
@@ -61,8 +61,8 @@ export default function Navbar() {
 
           {user ? (
             <div className="relative group">
-              <button className="flex items-center gap-2 text-sm">
-                <User size={20} />
+              <button className="flex items-center gap-2 text-sm" aria-label="เมนูบัญชีผู้ใช้" aria-haspopup="true">
+                <User size={20} aria-hidden="true" />
                 <span className="hidden md:block text-xs">{user.full_name || user.email}</span>
               </button>
               <div className="absolute right-0 top-8 bg-white border border-[#E8E4DF] shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
@@ -79,8 +79,13 @@ export default function Navbar() {
             <Link href="/auth/login" className="btn-primary text-xs py-2 px-4">เข้าสู่ระบบ</Link>
           )}
 
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          <button
+            className="md:hidden"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'ปิดเมนู' : 'เปิดเมนู'}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
           </button>
         </div>
       </div>

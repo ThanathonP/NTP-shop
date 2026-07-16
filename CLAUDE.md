@@ -55,3 +55,7 @@ NEXT_PUBLIC_APP_URL
 Six tables: `profiles`, `shops`, `products`, `cart_items`, `orders`, `order_items`. Full schema with RLS policies is in `supabase/schema.sql`. A trigger automatically creates a `profiles` row on Supabase Auth signup.
 
 Order status flow: `pending` → `confirmed` → `shipping` → `delivered` (or `cancelled`).
+
+## Seeding sample data
+
+`scripts/seed.js` populates products via the Supabase service-role key (bypasses RLS). Run with `node scripts/seed.js`.

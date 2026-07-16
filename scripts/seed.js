@@ -1,9 +1,24 @@
 // scripts/seed.js — เพิ่มสินค้าตัวอย่างลง Supabase
+// รัน: node scripts/seed.js
+const fs = require('fs')
+const path = require('path')
 const { createClient } = require('@supabase/supabase-js')
 
-const SUPABASE_URL = 'https://gzreffssadjpevbqhien.supabase.co'
-const SERVICE_ROLE_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6cmVmZnNzYWRqcGV2YnFoaWVuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTM5OTEyMSwiZXhwIjoyMDg2OTc1MTIxfQ.2EXTByo4wIzTO0tZU5c-loUTAtsvpfuMWqhm-xkbtRo'
+// โหลดค่าจาก .env.local (ไม่ได้ใช้ dotenv เพื่อลด dependency)
+const envPath = path.join(__dirname, '..', '.env.local')
+if (fs.existsSync(envPath)) {
+  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+    const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/)
+    if (match && !process.env[match[1]]) process.env[match[1]] = match[2] || ''
+  }
+}
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+  throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY — set them in .env.local')
+}
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },
