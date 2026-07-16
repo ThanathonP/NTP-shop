@@ -22,7 +22,16 @@
       "Bash(npx tsc *)",
       "Bash(npx next *)",
       "Bash(rm -rf .next)",
-      "Bash(npx vercel *)"
+      "Bash(npx vercel *)",
+      "Bash(node -e ' *)",
+      "Bash(nslookup gzreffssadjpevbqhien.supabase.co)",
+      "Bash(nslookup supabase.co)",
+      "Bash(nslookup google.com)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP:%{http_code}\\\\n\" --max-time 10 https://gzreffssadjpevbqhien.supabase.co)",
+      "Bash(nslookup gzreffssadjpevbqhien.supabase.co 8.8.8.8)",
+      "Bash(sed -n '27,222p' scripts/seed.js)",
+      "Read(//tmp/**)",
+      "Bash(node scripts/seed-shops.js)"
     ]
   }
 }
