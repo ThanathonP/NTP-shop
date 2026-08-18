@@ -5,10 +5,12 @@ import Link from 'next/link'
 import { Trash2, Plus, Minus } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
+import { useAppState } from '@/components/shop/AppStateContext'
 import type { CartItem } from '@/types'
 
 export default function CartClient({ initialItems }: { initialItems: any[] }) {
   const [items, setItems] = useState(initialItems)
+  const { setCartCount } = useAppState()
 
   const updateQty = async (id: string, qty: number) => {
     if (qty < 1) return removeItem(id)
@@ -21,6 +23,7 @@ export default function CartClient({ initialItems }: { initialItems: any[] }) {
     const supabase = createClient()
     await supabase.from('cart_items').delete().eq('id', id)
     setItems(prev => prev.filter(i => i.id !== id))
+    setCartCount((prev) => Math.max(0, prev - 1))
   }
 
   const total = items.reduce((s, i) => s + (i.products?.price || 0) * i.quantity, 0)

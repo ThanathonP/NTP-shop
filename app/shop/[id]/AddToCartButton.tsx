@@ -2,11 +2,13 @@
 import { useState } from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useAppState } from '@/components/shop/AppStateContext'
 import type { Product } from '@/types'
 
 export default function AddToCartButton({ product }: { product: Product }) {
   const [adding, setAdding] = useState(false)
   const [added, setAdded] = useState(false)
+  const { setCartCount } = useAppState()
 
   const addToCart = async () => {
     setAdding(true)
@@ -26,6 +28,8 @@ export default function AddToCartButton({ product }: { product: Product }) {
       product_id: product.id,
       quantity: existing ? existing.quantity + 1 : 1,
     }, { onConflict: 'user_id,product_id' })
+
+    if (!existing) setCartCount((prev) => prev + 1)
 
     setAdding(false)
     setAdded(true)

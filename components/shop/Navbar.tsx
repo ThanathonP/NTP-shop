@@ -1,30 +1,13 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ShoppingCart, Heart, User, Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import type { Profile } from '@/types'
+import { useAppState } from './AppStateContext'
 
 export default function Navbar() {
-  const [user, setUser] = useState<Profile | null>(null)
-  const [cartCount, setCartCount] = useState(0)
+  const { user, cartCount } = useAppState()
   const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const supabase = createClient()
-    supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (user) {
-        const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-        setUser(data)
-        // Get cart count
-        const { count } = await supabase
-          .from('cart_items')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-        setCartCount(count || 0)
-      }
-    })
-  }, [])
 
   const handleLogout = async () => {
     const supabase = createClient()

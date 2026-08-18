@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Navbar from '@/components/shop/Navbar'
 import { createClient } from '@/lib/supabase/client'
+import { useAppState } from '@/components/shop/AppStateContext'
 import { formatPrice } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
@@ -11,6 +12,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const router = useRouter()
+  const { setCartCount } = useAppState()
 
   useEffect(() => {
     const supabase = createClient()
@@ -50,6 +52,7 @@ export default function CheckoutPage() {
         }))
       )
       await supabase.from('cart_items').delete().eq('user_id', user.id)
+      setCartCount(0)
       setSuccess(true)
     }
     setLoading(false)

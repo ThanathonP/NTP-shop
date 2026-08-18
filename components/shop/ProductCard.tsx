@@ -6,10 +6,12 @@ import { formatPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
+import { useAppState } from './AppStateContext'
 
 export default function ProductCard({ product }: { product: Product }) {
   const [adding, setAdding] = useState(false)
   const [added, setAdded] = useState(false)
+  const { setCartCount } = useAppState()
 
   const addToCart = async () => {
     setAdding(true)
@@ -29,6 +31,8 @@ export default function ProductCard({ product }: { product: Product }) {
       product_id: product.id,
       quantity: existing ? existing.quantity + 1 : 1,
     }, { onConflict: 'user_id,product_id' })
+
+    if (!existing) setCartCount((prev) => prev + 1)
 
     setAdding(false)
     setAdded(true)
