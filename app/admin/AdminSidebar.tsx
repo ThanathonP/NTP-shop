@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Package, ShoppingBag, Store, LogOut, Menu, X, Building2, Users, ClipboardList } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Store, LogOut, Menu, X, Building2, Users, ClipboardList, BarChart3 } from 'lucide-react'
 
 const shopNavItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -12,6 +12,7 @@ const shopNavItems = [
 ]
 
 const platformNavItems = [
+  { href: '/admin/platform', icon: BarChart3, label: 'ภาพรวม' },
   { href: '/admin/platform/shops', icon: Building2, label: 'ร้านค้าทั้งหมด' },
   { href: '/admin/platform/users', icon: Users, label: 'ผู้ใช้ทั้งหมด' },
   { href: '/admin/platform/orders', icon: ClipboardList, label: 'คำสั่งซื้อทั้งหมด' },
