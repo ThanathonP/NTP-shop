@@ -141,16 +141,77 @@ create policy "Shop owners can view their order items" on order_items
     )
   );
 
--- policy นี้ต้องสร้างหลัง order_items เพราะอ้างอิงตารางนั้น
-create policy "Shop owners can view orders of their products" on orders
-  for select using (
-    exists (
-      select 1 from order_items oi
-      join products p on p.id = oi.product_id
-      join shops s on s.id = p.shop_id
-      where oi.order_id = orders.id and s.owner_id = auth.uid()
-    )
+-- ไม่มี insert policy มาก่อน ทำให้ checkout สร้าง order สำเร็จแต่ insert order_items ไม่ได้เลย
+-- (แถว order ถูกสร้างแต่ไม่มีรายการสินค้าอยู่ข้างใน)
+create policy "Users can create order items for their own orders" on order_items
+  for insert with check (
+    auth.uid() = (select user_id from orders where id = order_items.order_id)
   );
+
+-- ใช้ security definer function แทนการ query order_items ตรงๆ ใน policy ของ orders
+-- เพราะ order_items เองก็มี policy ที่ query กลับไปที่ orders (auth.uid() = orders.user_id)
+-- ถ้า policy ของ orders เข้าไป query order_items ตรงๆ จะเกิด RLS ประเมินวนกลับไปกลับมา
+-- ("infinite recursion detected in policy for relation orders") — security definer function
+-- รันด้วยสิทธิ์เจ้าของ function (ไม่ถูก RLS บล็อก) จึงตัดวงจรนี้ได้
+create or replace function shop_owns_order(order_id uuid)
+returns boolean as $$
+  select exists (
+    select 1 from order_items oi
+    join products p on p.id = oi.product_id
+    join shops s on s.id = p.shop_id
+    where oi.order_id = shop_owns_order.order_id and s.owner_id = auth.uid()
+  );
+$$ language sql security definer set search_path = public stable;
+
+-- policy นี้ต้องสร้างหลัง order_items เพราะอ้างอิงตารางนั้น (ผ่านฟังก์ชันด้านบน)
+create policy "Shop owners can view orders of their products" on orders
+  for select using (shop_owns_order(id));
+
+-- ไม่มี update policy มาก่อนเลย ทำให้ปุ่มเปลี่ยนสถานะคำสั่งซื้อใน /admin/orders ใช้งานไม่ได้จริง
+create policy "Shop owners can update orders of their products" on orders
+  for update using (shop_owns_order(id));
+
+-- ======= SITE ADMIN (role='admin') =======
+-- ให้สิทธิ์ role="admin" ดูแลข้อมูลทั้งระบบ: ดู/ปิดร้านค้าใดก็ได้, ดูสินค้า/คำสั่งซื้อทั้งหมด,
+-- ดูและเปลี่ยน role ของผู้ใช้คนไหนก็ได้ — แยกจากสิทธิ์ shop_owner ที่เห็นได้แค่ร้านตัวเอง
+create or replace function is_admin()
+returns boolean as $$
+  select exists (select 1 from profiles where id = auth.uid() and role = 'admin');
+$$ language sql security definer set search_path = public stable;
+
+create policy "Admins can view all shops" on shops
+  for select using (is_admin());
+create policy "Admins can manage all shops" on shops
+  for update using (is_admin());
+
+create policy "Admins can view all products" on products
+  for select using (is_admin());
+
+create policy "Admins can view all orders" on orders
+  for select using (is_admin());
+create policy "Admins can view all order items" on order_items
+  for select using (is_admin());
+
+create policy "Admins can view all profiles" on profiles
+  for select using (is_admin());
+create policy "Admins can update all profiles" on profiles
+  for update using (is_admin());
+
+-- กัน user ทั่วไป self-escalate role ตัวเองผ่าน "Users can update own profile"
+-- (เปลี่ยน role ได้ก็ต่อเมื่อคนที่สั่งเปลี่ยนเป็น admin เท่านั้น ไม่งั้นค่า role จะถูกเซ็ตกลับเป็นค่าเดิมเงียบๆ)
+create or replace function prevent_role_self_escalation()
+returns trigger as $$
+begin
+  if new.role <> old.role and not is_admin() then
+    new.role := old.role;
+  end if;
+  return new;
+end;
+$$ language plpgsql security definer set search_path = public;
+
+create trigger enforce_role_change_permission
+  before update on profiles
+  for each row execute function prevent_role_self_escalation();
 
 -- ======= SEED DATA (ตัวอย่าง) =======
 -- หมายเหตุ: รันหลังจากสร้าง user ผ่าน Auth แล้ว

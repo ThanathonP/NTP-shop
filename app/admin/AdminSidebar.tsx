@@ -2,18 +2,25 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Package, ShoppingBag, Store, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Store, LogOut, Menu, X, Building2, Users, ClipboardList } from 'lucide-react'
 
-const navItems = [
+const shopNavItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/admin/products', icon: Package, label: 'สินค้า' },
   { href: '/admin/orders', icon: ShoppingBag, label: 'คำสั่งซื้อ' },
   { href: '/admin/shop', icon: Store, label: 'ข้อมูลร้าน' },
 ]
 
-export default function AdminSidebar({ name }: { name: string }) {
+const platformNavItems = [
+  { href: '/admin/platform/shops', icon: Building2, label: 'ร้านค้าทั้งหมด' },
+  { href: '/admin/platform/users', icon: Users, label: 'ผู้ใช้ทั้งหมด' },
+  { href: '/admin/platform/orders', icon: ClipboardList, label: 'คำสั่งซื้อทั้งหมด' },
+]
+
+export default function AdminSidebar({ name, role }: { name: string, role: string }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
+  const isAdmin = role === 'admin'
 
   return (
     <>
@@ -50,7 +57,7 @@ export default function AdminSidebar({ name }: { name: string }) {
           </button>
         </div>
         <nav className="flex-1 p-4 space-y-1">
-          {navItems.map(({ href, icon: Icon, label }) => {
+          {shopNavItems.map(({ href, icon: Icon, label }) => {
             const active = pathname === href
             return (
               <Link
@@ -67,6 +74,28 @@ export default function AdminSidebar({ name }: { name: string }) {
               </Link>
             )
           })}
+          {isAdmin && (
+            <>
+              <p className="px-4 pt-5 pb-1 text-[10px] uppercase tracking-widest text-white/30">จัดการเว็บไซต์</p>
+              {platformNavItems.map(({ href, icon: Icon, label }) => {
+                const active = pathname === href
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? 'page' : undefined}
+                    className={`flex items-center gap-3 px-4 py-3 text-sm rounded transition-colors ${
+                      active ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <Icon size={16} aria-hidden="true" />
+                    {label}
+                  </Link>
+                )
+              })}
+            </>
+          )}
         </nav>
         <div className="p-4 border-t border-white/10">
           <p className="text-xs text-white/40 mb-1">เข้าสู่ระบบในฐานะ</p>

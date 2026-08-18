@@ -31,7 +31,17 @@
       "Bash(nslookup gzreffssadjpevbqhien.supabase.co 8.8.8.8)",
       "Bash(sed -n '27,222p' scripts/seed.js)",
       "Read(//tmp/**)",
-      "Bash(node scripts/seed-shops.js)"
+      "Bash(node scripts/seed-shops.js)",
+      "Bash(node -e \"try { require.resolve\\('xlsx'\\); console.log\\('xlsx available'\\) } catch\\(e\\) { console.log\\('not available'\\) }\")",
+      "Bash(mkdir -p C:/Users/NTP/AppData/Local/Temp/claude/c--Documents-NTP-shop/a30515d1-20f7-4f41-a709-01eb11639da5/scratchpad/xlsxgen)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(mkdir -p \"/c/Documents/NTP-shop/docs\")",
+      "Bash(node gen.js \"/c/Documents/NTP-shop/docs\")",
+      "Bash(tail -40 /tmp/ntp-dev.log 2>&1)",
+      "Bash(curl -s -o /dev/null -w \"homepage: %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"shop: %{http_code}\\\\n\" http://localhost:3000/shop)",
+      "Bash(curl -s -o /dev/null -w \"shops: %{http_code}\\\\n\" http://localhost:3000/shops)"
     ]
   }
 }
