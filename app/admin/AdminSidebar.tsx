@@ -58,7 +58,8 @@ export default function AdminSidebar({ name, role }: { name: string, role: strin
           </button>
         </div>
         <nav className="flex-1 p-4 space-y-1">
-          {shopNavItems.map(({ href, icon: Icon, label }) => {
+          {/* admin ดูแลทั้งเว็บ ไม่มีร้านของตัวเอง จึงเห็นเฉพาะเมนูจัดการเว็บไซต์ ไม่เห็นเมนูร้านค้า */}
+          {(isAdmin ? platformNavItems : shopNavItems).map(({ href, icon: Icon, label }) => {
             const active = pathname === href
             return (
               <Link
@@ -75,28 +76,6 @@ export default function AdminSidebar({ name, role }: { name: string, role: strin
               </Link>
             )
           })}
-          {isAdmin && (
-            <>
-              <p className="px-4 pt-5 pb-1 text-[10px] uppercase tracking-widest text-white/30">จัดการเว็บไซต์</p>
-              {platformNavItems.map(({ href, icon: Icon, label }) => {
-                const active = pathname === href
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={() => setOpen(false)}
-                    aria-current={active ? 'page' : undefined}
-                    className={`flex items-center gap-3 px-4 py-3 text-sm rounded transition-colors ${
-                      active ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <Icon size={16} aria-hidden="true" />
-                    {label}
-                  </Link>
-                )
-              })}
-            </>
-          )}
         </nav>
         <div className="p-4 border-t border-white/10">
           <p className="text-xs text-white/40 mb-1">เข้าสู่ระบบในฐานะ</p>
