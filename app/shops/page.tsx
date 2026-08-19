@@ -27,8 +27,13 @@ export default async function ShopsPage() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-5xl">🏪</div>
                   )}
+                  {shop.logo_url && (
+                    <div className="absolute -bottom-6 left-6 w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md bg-white">
+                      <Image src={shop.logo_url} alt="" fill className="object-cover" />
+                    </div>
+                  )}
                 </div>
-                <div className="p-6">
+                <div className={`p-6 ${shop.logo_url ? 'pt-9' : ''}`}>
                   <h2 className="font-medium text-lg mb-2 group-hover:text-[#C8A882] transition-colors">{shop.name}</h2>
                   {shop.description && (
                     <p className="text-sm text-[#888] line-clamp-2">{shop.description}</p>

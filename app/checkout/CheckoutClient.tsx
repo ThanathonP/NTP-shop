@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import Navbar from '@/components/shop/Navbar'
 import { createClient } from '@/lib/supabase/client'
 import { useAppState } from '@/components/shop/AppStateContext'
@@ -52,7 +53,7 @@ export default function CheckoutClient({ initialItems }: { initialItems: any[] }
           <div className="text-6xl mb-4">✅</div>
           <h2 className="font-display text-3xl mb-2">สั่งซื้อสำเร็จ!</h2>
           <p className="text-[#888] mb-6">คำสั่งซื้อของคุณถูกบันทึกแล้ว เราจะดำเนินการจัดส่งโดยเร็ว</p>
-          <a href="/orders" className="btn-primary justify-center">ดูคำสั่งซื้อของฉัน</a>
+          <Link href="/orders" className="btn-primary justify-center">ดูคำสั่งซื้อของฉัน</Link>
         </div>
       </div>
     </>

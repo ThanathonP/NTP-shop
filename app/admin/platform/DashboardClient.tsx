@@ -1,6 +1,6 @@
 'use client'
 import { useMemo, useState } from 'react'
-import { formatPrice, ORDER_STATUS_LABEL, cn } from '@/lib/utils'
+import { formatPrice, ORDER_STATUSES, ORDER_STATUS_LABEL, cn } from '@/lib/utils'
 import type { OrderStatus } from '@/types'
 import DateRangeFilter, { rangeForPreset, type DateRange } from './DateRangeFilter'
 import TrendLine from './charts/TrendLine'
@@ -19,7 +19,6 @@ type RawOrderItem = {
 type RawShop = { id: string, name: string, is_active: boolean, created_at: string }
 type RawProfile = { id: string, created_at: string }
 
-const STATUSES: OrderStatus[] = ['pending', 'confirmed', 'shipping', 'delivered', 'cancelled']
 const notCancelled = (status: string) => status !== 'cancelled'
 
 function inRange(iso: string, from: Date, to: Date) {
@@ -98,7 +97,7 @@ export default function DashboardClient({
   )
 
   const statusCounts = useMemo(
-    () => STATUSES.map((s) => ({ status: s, count: ordersInRange.filter((o) => o.status === s).length })),
+    () => ORDER_STATUSES.map((s) => ({ status: s, count: ordersInRange.filter((o) => o.status === s).length })),
     [ordersInRange]
   )
 

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 import { formatPrice, ORDER_STATUS_LABEL, ORDER_STATUS_COLOR } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 
@@ -49,7 +50,7 @@ export default async function AdminDashboard() {
         <div className="card p-8 text-center mb-8">
           <p className="text-lg mb-2">ยังไม่มีร้านค้า</p>
           <p className="text-[#888] text-sm mb-4">สร้างร้านค้าของคุณก่อนเริ่มขายสินค้า</p>
-          <a href="/admin/shop" className="btn-primary">สร้างร้านค้าเลย →</a>
+          <Link href="/admin/shop" className="btn-primary">สร้างร้านค้าเลย →</Link>
         </div>
       )}
 
@@ -91,7 +92,7 @@ export default async function AdminDashboard() {
                         {ORDER_STATUS_LABEL[order.status]}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-[#888] text-xs">{new Date(order.created_at).toLocaleDateString('th-TH')}</td>
+                    <td className="px-6 py-4 text-[#888] text-xs">{new Date(order.created_at).toLocaleDateString('th-TH', { dateStyle: 'long' })}</td>
                   </tr>
                 ))}
               </tbody>

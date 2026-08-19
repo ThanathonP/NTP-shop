@@ -13,6 +13,8 @@ export function formatPrice(price: number) {
   }).format(price)
 }
 
+export const ORDER_STATUSES = ['pending', 'confirmed', 'shipping', 'delivered', 'cancelled'] as const
+
 export const ORDER_STATUS_LABEL: Record<string, string> = {
   pending: 'รอยืนยัน',
   confirmed: 'ยืนยันแล้ว',

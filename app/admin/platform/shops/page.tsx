@@ -37,7 +37,7 @@ export default async function PlatformShopsPage() {
                   <tr key={shop.id} className="hover:bg-[#F7F5F2]">
                     <td className="px-6 py-4 font-medium">{shop.name}</td>
                     <td className="px-6 py-4 text-[#888] text-xs">{shop.profiles?.full_name || shop.profiles?.email || '-'}</td>
-                    <td className="px-6 py-4 text-[#888] text-xs">{new Date(shop.created_at).toLocaleDateString('th-TH')}</td>
+                    <td className="px-6 py-4 text-[#888] text-xs">{new Date(shop.created_at).toLocaleDateString('th-TH', { dateStyle: 'long' })}</td>
                     <td className="px-6 py-4">
                       <span className={cn('px-2 py-1 rounded text-xs', shop.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')}>
                         {shop.is_active ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}

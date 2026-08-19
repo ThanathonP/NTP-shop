@@ -38,6 +38,15 @@ export default function ShopFormClient({ initialShop, ownerId }: { initialShop: 
           <label className="text-xs uppercase tracking-widest text-[#888] block mb-2">{label}</label>
           <input type={type} className="input" required={field === 'name'}
             value={(form as any)[field]} onChange={e => setForm(p => ({...p, [field]: e.target.value}))} />
+          {(field === 'logo_url' || field === 'banner_url') && (form as any)[field] && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={(form as any)[field]}
+              alt="ตัวอย่าง"
+              className={field === 'logo_url' ? 'w-16 h-16 rounded-full object-cover mt-3 border border-[#E8E4DF]' : 'w-full h-32 object-cover mt-3 border border-[#E8E4DF]'}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+            />
+          )}
         </div>
       ))}
       <div>

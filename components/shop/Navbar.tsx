@@ -23,7 +23,7 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <ul className="hidden md:flex gap-8 list-none">
-          {[['สินค้าทั้งหมด', '/shop'], ['ร้านค้า', '/shops'], ['โปรโมชัน', '/shop?sale=1']].map(([label, href]) => (
+          {[['สินค้าทั้งหมด', '/shop'], ['ร้านค้า', '/shops']].map(([label, href]) => (
             <li key={href}>
               <Link href={href} className="text-xs tracking-widest uppercase text-[#888] hover:text-[#1A1A1A] transition-colors">
                 {label}
@@ -82,7 +82,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="absolute top-16 left-0 right-0 bg-white border-b border-[#E8E4DF] md:hidden">
-          {[['สินค้าทั้งหมด', '/shop'], ['ร้านค้า', '/shops'], ['โปรโมชัน', '/shop?sale=1']].map(([label, href]) => (
+          {[['สินค้าทั้งหมด', '/shop'], ['ร้านค้า', '/shops']].map(([label, href]) => (
             <Link key={href} href={href} className="block px-6 py-4 text-sm border-b border-[#E8E4DF]" onClick={() => setMenuOpen(false)}>
               {label}
             </Link>

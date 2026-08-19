@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
 import ProductsClient from './ProductsClient'
 
@@ -10,7 +11,7 @@ export default async function AdminProductsPage() {
   if (!shop) return (
     <div className="p-8 text-center">
       <p className="text-lg mb-4">กรุณาสร้างร้านค้าก่อน</p>
-      <a href="/admin/shop" className="btn-primary">ไปสร้างร้านค้า</a>
+      <Link href="/admin/shop" className="btn-primary">ไปสร้างร้านค้า</Link>
     </div>
   )
 

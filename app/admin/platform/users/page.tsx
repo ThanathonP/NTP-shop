@@ -35,7 +35,7 @@ export default async function PlatformUsersPage() {
                   <tr key={u.id} className="hover:bg-[#F7F5F2]">
                     <td className="px-6 py-4 font-medium">{u.full_name || '-'}</td>
                     <td className="px-6 py-4 text-[#888] text-xs">{u.email}</td>
-                    <td className="px-6 py-4 text-[#888] text-xs">{new Date(u.created_at).toLocaleDateString('th-TH')}</td>
+                    <td className="px-6 py-4 text-[#888] text-xs">{new Date(u.created_at).toLocaleDateString('th-TH', { dateStyle: 'long' })}</td>
                     <td className="px-6 py-4">
                       <UserRoleUpdater userId={u.id} currentRole={u.role} disableChange={u.id === user!.id} />
                     </td>

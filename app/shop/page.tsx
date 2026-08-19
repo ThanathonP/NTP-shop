@@ -1,4 +1,5 @@
 import Navbar from '@/components/shop/Navbar'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import ProductCard from '@/components/shop/ProductCard'
 import type { Product } from '@/types'
@@ -29,6 +30,7 @@ export default async function ShopPage({ searchParams }: { searchParams: { q?: s
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
           <h1 className="font-display text-3xl">สินค้าทั้งหมด</h1>
           <form className="flex gap-2 w-full md:w-auto">
+            {searchParams.category && <input type="hidden" name="category" value={searchParams.category} />}
             <input name="q" defaultValue={searchParams.q} placeholder="ค้นหาสินค้า..." className="input w-full md:w-64" />
             <button type="submit" className="btn-primary py-2">ค้นหา</button>
           </form>
@@ -36,19 +38,25 @@ export default async function ShopPage({ searchParams }: { searchParams: { q?: s
 
         {/* Category Filter */}
         <div className="flex gap-2 flex-wrap mb-8">
-          {categories.map(cat => (
-            <a
-              key={cat}
-              href={cat === 'ทั้งหมด' ? '/shop' : `/shop?category=${cat}`}
-              className={`px-4 py-2 text-xs tracking-widest uppercase border transition-colors ${
-                (cat === 'ทั้งหมด' && !searchParams.category) || searchParams.category === cat
-                  ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
-                  : 'border-[#E8E4DF] text-[#888] hover:border-[#1A1A1A] hover:text-[#1A1A1A]'
-              }`}
-            >
-              {cat}
-            </a>
-          ))}
+          {categories.map(cat => {
+            const params = new URLSearchParams()
+            if (searchParams.q) params.set('q', searchParams.q)
+            if (cat !== 'ทั้งหมด') params.set('category', cat)
+            const qs = params.toString()
+            return (
+              <Link
+                key={cat}
+                href={qs ? `/shop?${qs}` : '/shop'}
+                className={`px-4 py-2 text-xs tracking-widest uppercase border transition-colors ${
+                  (cat === 'ทั้งหมด' && !searchParams.category) || searchParams.category === cat
+                    ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
+                    : 'border-[#E8E4DF] text-[#888] hover:border-[#1A1A1A] hover:text-[#1A1A1A]'
+                }`}
+              >
+                {cat}
+              </Link>
+            )
+          })}
         </div>
 
         {products && products.length > 0 ? (

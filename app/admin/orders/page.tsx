@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 import { formatPrice, ORDER_STATUS_LABEL, ORDER_STATUS_COLOR } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import OrderStatusUpdater from './OrderStatusUpdater'
@@ -8,7 +9,12 @@ export default async function AdminOrdersPage() {
   const { data: { user } } = await supabase.auth.getUser()
   const { data: shop } = await supabase.from('shops').select('id').eq('owner_id', user!.id).single()
 
-  if (!shop) return <div className="p-8 text-center text-[#888]">กรุณาสร้างร้านค้าก่อน</div>
+  if (!shop) return (
+    <div className="p-8 text-center">
+      <p className="text-lg mb-4 text-[#888]">กรุณาสร้างร้านค้าก่อน</p>
+      <Link href="/admin/shop" className="btn-primary">ไปสร้างร้านค้า</Link>
+    </div>
+  )
 
   // Get orders that contain products from this shop
   const { data: orderItems } = await supabase

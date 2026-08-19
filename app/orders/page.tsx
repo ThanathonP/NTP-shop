@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Navbar from '@/components/shop/Navbar'
+import Link from 'next/link'
 import { formatPrice, ORDER_STATUS_LABEL, ORDER_STATUS_COLOR } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import { redirect } from 'next/navigation'
@@ -25,7 +26,7 @@ export default async function OrdersPage() {
           <div className="text-center py-32">
             <p className="text-5xl mb-4">📦</p>
             <p className="text-xl font-display mb-2">ยังไม่มีคำสั่งซื้อ</p>
-            <a href="/shop" className="btn-primary mt-4 inline-flex">เลือกซื้อสินค้า</a>
+            <Link href="/shop" className="btn-primary mt-4 inline-flex">เลือกซื้อสินค้า</Link>
           </div>
         ) : (
           <div className="space-y-4">

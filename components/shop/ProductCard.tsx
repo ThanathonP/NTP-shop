@@ -50,7 +50,7 @@ export default function ProductCard({ product }: { product: Product }) {
         )}
         {product.stock_qty === 0 && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <span className="text-white text-sm tracking-widest uppercase">หมด</span>
+            <span className="text-white text-sm tracking-widest uppercase">สินค้าหมด</span>
           </div>
         )}
         {/* Hover Actions */}
@@ -76,7 +76,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </Link>
         <div className="flex items-center justify-between">
           <span className="font-medium">{formatPrice(product.price)}</span>
-          <span className="text-xs text-[#888]">เหลือ {product.stock_qty}</span>
+          <span className="text-xs text-[#888]">เหลือ {product.stock_qty} ชิ้น</span>
         </div>
       </div>
     </div>

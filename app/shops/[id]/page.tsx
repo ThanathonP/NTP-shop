@@ -1,4 +1,5 @@
 import Navbar from '@/components/shop/Navbar'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import ProductCard from '@/components/shop/ProductCard'
@@ -25,13 +26,26 @@ export default async function ShopDetailPage({ params }: { params: { id: string 
     <>
       <Navbar />
       <main className="pt-16">
-        <div className="bg-[#1A1A1A] text-white py-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <p className="text-xs uppercase tracking-widest text-[#C8A882] mb-4">ร้านค้า</p>
-            <h1 className="font-display text-5xl mb-3">{shop.name}</h1>
-            {shop.description && (
-              <p className="text-white/60 max-w-lg">{shop.description}</p>
+        <div className="relative bg-[#1A1A1A] text-white py-20 px-6 overflow-hidden">
+          {shop.banner_url && (
+            <>
+              <Image src={shop.banner_url} alt="" fill className="object-cover opacity-40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/70 to-[#1A1A1A]/40" />
+            </>
+          )}
+          <div className="relative max-w-7xl mx-auto flex items-center gap-6">
+            {shop.logo_url && (
+              <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white/20 flex-shrink-0">
+                <Image src={shop.logo_url} alt={shop.name} fill className="object-cover" />
+              </div>
             )}
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[#C8A882] mb-4">ร้านค้า</p>
+              <h1 className="font-display text-5xl mb-3">{shop.name}</h1>
+              {shop.description && (
+                <p className="text-white/60 max-w-lg">{shop.description}</p>
+              )}
+            </div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 py-12">
