@@ -32,7 +32,8 @@ export default function ProductCard({ product }: { product: Product }) {
       quantity: existing ? existing.quantity + 1 : 1,
     }, { onConflict: 'user_id,product_id' })
 
-    if (!existing) setCartCount((prev) => prev + 1)
+    const { count } = await supabase.from('cart_items').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
+    setCartCount(count || 0)
 
     setAdding(false)
     setAdded(true)

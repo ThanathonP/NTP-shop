@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Trash2, Plus, Minus } from 'lucide-react'
@@ -12,6 +12,12 @@ export default function CartClient({ initialItems }: { initialItems: any[] }) {
   const [items, setItems] = useState(initialItems)
   const { setCartCount } = useAppState()
 
+  // ตะกร้าที่ query มาตอน SSR คือค่าจริงล่าสุดเสมอ — sync กลับเข้า context ทันทีที่เข้าหน้านี้
+  // เผื่อ badge ที่ Navbar เพี้ยนไปจากการกดเพิ่มสินค้าซ้ำๆ เร็วๆ ในหน้าอื่นมาก่อน
+  useEffect(() => {
+    setCartCount(initialItems.length)
+  }, [])
+
   const updateQty = async (id: string, qty: number) => {
     if (qty < 1) return removeItem(id)
     const supabase = createClient()
@@ -22,8 +28,11 @@ export default function CartClient({ initialItems }: { initialItems: any[] }) {
   const removeItem = async (id: string) => {
     const supabase = createClient()
     await supabase.from('cart_items').delete().eq('id', id)
-    setItems(prev => prev.filter(i => i.id !== id))
-    setCartCount((prev) => Math.max(0, prev - 1))
+    setItems(prev => {
+      const next = prev.filter(i => i.id !== id)
+      setCartCount(next.length)
+      return next
+    })
   }
 
   const total = items.reduce((s, i) => s + (i.products?.price || 0) * i.quantity, 0)
