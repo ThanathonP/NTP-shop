@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCart, Heart } from 'lucide-react'
+import { ShoppingCart, Heart, Check } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 import { createClient } from '@/lib/supabase/client'
@@ -10,8 +10,9 @@ import { useAppState } from './AppStateContext'
 
 export default function ProductCard({ product }: { product: Product }) {
   const [adding, setAdding] = useState(false)
-  const [added, setAdded] = useState(false)
-  const { setCartCount } = useAppState()
+  const [justAdded, setJustAdded] = useState(false)
+  const { isInCart, addToCartState } = useAppState()
+  const inCart = isInCart(product.id)
 
   const addToCart = async () => {
     setAdding(true)
@@ -32,12 +33,11 @@ export default function ProductCard({ product }: { product: Product }) {
       quantity: existing ? existing.quantity + 1 : 1,
     }, { onConflict: 'user_id,product_id' })
 
-    const { count } = await supabase.from('cart_items').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
-    setCartCount(count || 0)
+    addToCartState(product.id)
 
     setAdding(false)
-    setAdded(true)
-    setTimeout(() => setAdded(false), 2000)
+    setJustAdded(true)
+    setTimeout(() => setJustAdded(false), 1500)
   }
 
   return (
@@ -53,6 +53,11 @@ export default function ProductCard({ product }: { product: Product }) {
             <span className="text-white text-sm tracking-widest uppercase">สินค้าหมด</span>
           </div>
         )}
+        {inCart && (
+          <div className="absolute top-2 left-2 bg-[#1A1A1A]/90 text-white rounded-full p-1" aria-label="อยู่ในตะกร้าแล้ว">
+            <Check size={12} aria-hidden="true" />
+          </div>
+        )}
         {/* Hover Actions */}
         <div className="absolute bottom-0 left-0 right-0 bg-[#1A1A1A]/90 p-3 flex gap-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <button
@@ -61,7 +66,7 @@ export default function ProductCard({ product }: { product: Product }) {
             className="flex-1 text-white text-xs tracking-widest uppercase py-2 hover:bg-white/10 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             <ShoppingCart size={14} />
-            {added ? 'เพิ่มแล้ว ✓' : adding ? '...' : 'เพิ่มลงตะกร้า'}
+            {justAdded ? 'เพิ่มแล้ว ✓' : adding ? '...' : inCart ? 'เพิ่มอีก' : 'เพิ่มลงตะกร้า'}
           </button>
         </div>
       </div>

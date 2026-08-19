@@ -10,12 +10,12 @@ import type { CartItem } from '@/types'
 
 export default function CartClient({ initialItems }: { initialItems: any[] }) {
   const [items, setItems] = useState(initialItems)
-  const { setCartCount } = useAppState()
+  const { setCartProductIds, removeFromCartState } = useAppState()
 
   // ตะกร้าที่ query มาตอน SSR คือค่าจริงล่าสุดเสมอ — sync กลับเข้า context ทันทีที่เข้าหน้านี้
-  // เผื่อ badge ที่ Navbar เพี้ยนไปจากการกดเพิ่มสินค้าซ้ำๆ เร็วๆ ในหน้าอื่นมาก่อน
+  // เผื่อ state เพี้ยนไปจากการกดเพิ่มสินค้าซ้ำๆ เร็วๆ ในหน้าอื่นมาก่อน
   useEffect(() => {
-    setCartCount(initialItems.length)
+    setCartProductIds(initialItems.map((i) => i.product_id))
   }, [])
 
   const updateQty = async (id: string, qty: number) => {
@@ -29,9 +29,9 @@ export default function CartClient({ initialItems }: { initialItems: any[] }) {
     const supabase = createClient()
     await supabase.from('cart_items').delete().eq('id', id)
     setItems(prev => {
-      const next = prev.filter(i => i.id !== id)
-      setCartCount(next.length)
-      return next
+      const removed = prev.find((i) => i.id === id)
+      if (removed) removeFromCartState(removed.product_id)
+      return prev.filter(i => i.id !== id)
     })
   }
 

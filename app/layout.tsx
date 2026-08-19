@@ -25,20 +25,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { data: { user } } = await supabase.auth.getUser()
 
   let profile = null
-  let cartCount = 0
+  let cartProductIds: string[] = []
   if (user) {
-    const [{ data: profileData }, { count }] = await Promise.all([
+    const [{ data: profileData }, { data: cartItems }] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', user.id).single(),
-      supabase.from('cart_items').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
+      supabase.from('cart_items').select('product_id').eq('user_id', user.id),
     ])
     profile = profileData
-    cartCount = count || 0
+    cartProductIds = (cartItems || []).map((i) => i.product_id)
   }
 
   return (
     <html lang="th">
       <body className={`${sarabun.variable} ${playfair.variable} font-sans bg-[#F7F5F2] text-[#1A1A1A]`}>
-        <AppStateProvider initialUser={profile} initialCartCount={cartCount}>
+        <AppStateProvider initialUser={profile} initialCartProductIds={cartProductIds}>
           {children}
         </AppStateProvider>
       </body>

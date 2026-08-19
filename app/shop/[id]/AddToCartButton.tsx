@@ -1,14 +1,15 @@
 'use client'
 import { useState } from 'react'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAppState } from '@/components/shop/AppStateContext'
 import type { Product } from '@/types'
 
 export default function AddToCartButton({ product }: { product: Product }) {
   const [adding, setAdding] = useState(false)
-  const [added, setAdded] = useState(false)
-  const { setCartCount } = useAppState()
+  const [justAdded, setJustAdded] = useState(false)
+  const { isInCart, addToCartState } = useAppState()
+  const inCart = isInCart(product.id)
 
   const addToCart = async () => {
     setAdding(true)
@@ -29,13 +30,19 @@ export default function AddToCartButton({ product }: { product: Product }) {
       quantity: existing ? existing.quantity + 1 : 1,
     }, { onConflict: 'user_id,product_id' })
 
-    const { count } = await supabase.from('cart_items').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
-    setCartCount(count || 0)
+    addToCartState(product.id)
 
     setAdding(false)
-    setAdded(true)
-    setTimeout(() => setAdded(false), 2000)
+    setJustAdded(true)
+    setTimeout(() => setJustAdded(false), 1500)
   }
+
+  const label = product.stock_qty === 0
+    ? 'สินค้าหมด'
+    : adding ? '...'
+    : justAdded ? 'เพิ่มลงตะกร้าแล้ว ✓'
+    : inCart ? 'อยู่ในตะกร้าแล้ว — เพิ่มอีก'
+    : 'เพิ่มลงตะกร้า'
 
   return (
     <button
@@ -43,8 +50,8 @@ export default function AddToCartButton({ product }: { product: Product }) {
       disabled={adding || product.stock_qty === 0}
       className="btn-primary w-full justify-center py-4 flex items-center gap-3 disabled:opacity-50"
     >
-      <ShoppingCart size={18} />
-      {product.stock_qty === 0 ? 'สินค้าหมด' : added ? 'เพิ่มลงตะกร้าแล้ว ✓' : adding ? '...' : 'เพิ่มลงตะกร้า'}
+      {inCart && !justAdded ? <Check size={18} /> : <ShoppingCart size={18} />}
+      {label}
     </button>
   )
 }

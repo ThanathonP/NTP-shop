@@ -11,7 +11,7 @@ export default function CheckoutClient({ initialItems }: { initialItems: any[] }
   const [form, setForm] = useState({ name: '', phone: '', address: '', province: '', postal_code: '' })
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const { setCartCount } = useAppState()
+  const { clearCart } = useAppState()
 
   const total = items.reduce((s, i) => s + (i.products?.price || 0) * i.quantity, 0)
 
@@ -39,7 +39,7 @@ export default function CheckoutClient({ initialItems }: { initialItems: any[] }
         }))
       )
       await supabase.from('cart_items').delete().eq('user_id', user.id)
-      setCartCount(0)
+      clearCart()
       setSuccess(true)
     }
     setLoading(false)
